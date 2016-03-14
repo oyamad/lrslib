@@ -229,6 +229,7 @@ long lrs_main (int argc, char *argv[]);    /* lrs driver, argv[1]=input file, [a
 long redund_main (int argc, char *argv[]); /* redund driver, argv[1]=input file, [2]=output file */
 lrs_dat *lrs_alloc_dat (const char *name);	/* allocate for lrs_dat structure "name"       */
 lrs_dic *lrs_alloc_dic (lrs_dat * Q);	/* allocate for lrs_dic structure corr. to Q   */
+void lrs_init_dat (lrs_dat * Q, long m, long n, long hull); /* Initialize Q with matrix A */
 long lrs_estimate (lrs_dic * P, lrs_dat * Q);	/* get estimates only and returns est number of cobases in subtree */
 long lrs_read_dat (lrs_dat * Q, int argc, char *argv[]);	/* read header and set up lrs_dat               */
 long lrs_read_dic (lrs_dic * P, lrs_dat * Q);	/* read input and set up problem and lrs_dic    */

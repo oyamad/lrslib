@@ -1095,16 +1095,19 @@ long
 lrs_init (char *name)       /* returns TRUE if successful, else FALSE */
 {
 
-  printf ("%s", name);
-  printf (TITLE);
-  printf (VERSION);
-  printf ("(");
-/*  printf (BIT); */
-/*  printf (","); */
-  printf (ARITH);
+  if (name != NULL){
+    printf ("%s", name);
+    printf (TITLE);
+    printf (VERSION);
+    printf ("(");
+    /*  printf (BIT); */
+    /*  printf (","); */
+    printf (ARITH);
+  }
   if (!lrs_mp_init (ZERO, stdin, stdout))  /* initialize arithmetic */
     return FALSE;
-  printf (")");
+  if (name != NULL)
+    printf (")");
 
 
   lrs_global_count = 0;
@@ -1236,6 +1239,23 @@ lrs_alloc_dat (const char *name)
 
   return Q;
 }				/* end of allocate and initialize lrs_dat */
+
+void
+lrs_init_dat (lrs_dat * Q, long m, long n, long hull)
+{
+  long i;
+  Q->m = m;
+  Q->n = n;
+  if (hull)
+    {
+      Q->hull = TRUE;
+      Q->polytope = TRUE;		/* will be updated as input read */
+    }
+  else
+    {
+      Q->hull = FALSE;
+    }
+}				/* end lrs_init_dat */
 
 /*******************************/
 /*  lrs_read_dat               */
