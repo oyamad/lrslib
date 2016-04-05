@@ -1170,8 +1170,15 @@ lrs_alloc_dat (const char *name)
   lrs_global_list[lrs_global_count] = Q;
   Q->id = lrs_global_count;
   lrs_global_count++;
-  Q->name=(char *) CALLOC ((unsigned) strlen(name)+1, sizeof (char));
-  strcpy(Q->name,name); 
+  if (name == NULL)
+    {
+      Q->name = NULL;
+    }
+  else
+    {
+      Q->name=(char *) CALLOC ((unsigned) strlen(name)+1, sizeof (char));
+      strcpy(Q->name,name);
+    }
 
 /* initialize variables */
   Q->m = 0L;
@@ -5036,7 +5043,8 @@ lrs_free_dat ( lrs_dat *Q )
   free (Q->minratio);
   free (Q->temparray);
 
-  free (Q->name);  
+  if (Q->name != NULL)
+    free (Q->name);
   free (Q->saved_C);
 
   lrs_global_count--;
