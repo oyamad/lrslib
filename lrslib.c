@@ -1257,6 +1257,11 @@ lrs_init_dat (lrs_dat * Q, long m, long n, long hull)
     }
 }				/* end lrs_init_dat */
 
+void lrs_setdebug (lrs_dat * Q, long debug)
+{
+  Q->debug = debug;
+}
+
 /*******************************/
 /*  lrs_read_dat               */
 /*******************************/
