@@ -304,6 +304,7 @@ long checkindex (lrs_dic * P, lrs_dat * Q, long index); /* index=0 non-red.,1 re
 /***************************************************/
 /* Routines for caching and restoring dictionaries */
 /***************************************************/
+void lrs_free_dic_and_dat (lrs_dic *P, lrs_dat *Q);
 void lrs_free_dic ( lrs_dic *P, lrs_dat *Q);
 void lrs_free_dic2 ( lrs_dic *P, lrs_dat *Q);  /* same as lrs_free_dic but no cache*/
 void lrs_free_dat ( lrs_dat *Q);

@@ -225,11 +225,7 @@ Q = lrs_alloc_dat ("");	/* allocate and init structure for static problem data *
       free(Q->isave);
       free(Q->jsave);
     }
-  long savem=P->m;              /* need this to clear Q*/
-  lrs_free_dic (P,Q);           /* deallocate lrs_dic */
-  Q->m=savem;
-
-  lrs_free_dat (Q);             /* deallocate lrs_dat */
+  lrs_free_dic_and_dat (P,Q);   /* deallocate lrs_dic and lrs_dat */
 
 #ifndef PLRS
   	lrs_close ("lrs:");
@@ -894,12 +890,7 @@ redund_main (int argc, char *argv[])
   fprintf (lrs_ofp, "\n*Input had %ld rows and %ld columns", m, Q->n);
   fprintf (lrs_ofp, ": %ld row(s) redundant", m - nredund);
 
-/* 2015.9.9  fix memory leak on Gcd Lcm */
-  long savem=P->m;              /* need this to clear Q*/
-  lrs_free_dic (P,Q);           /* deallocate lrs_dic */
-  Q->m=savem;
-
-  lrs_free_dat (Q);             /* deallocate lrs_dat */
+  lrs_free_dic_and_dat (P,Q);   /* deallocate lrs_dic and lrs_dat */
 
 
   lrs_close ("redund:");
@@ -5050,6 +5041,16 @@ lrs_free_dat ( lrs_dat *Q )
   lrs_global_count--;
 
   free(Q);
+}
+
+void lrs_free_dic_and_dat (lrs_dic *P, lrs_dat *Q)
+{
+/* 2015.9.9  fix memory leak on Gcd Lcm */
+  long savem=P->m;              /* need this to clear Q*/
+  lrs_free_dic (P,Q);           /* deallocate lrs_dic */
+  Q->m=savem;
+
+  lrs_free_dat (Q);             /* deallocate lrs_dat */
 }
 
 
