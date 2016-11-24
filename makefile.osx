@@ -10,6 +10,8 @@
 #make plrs              plrs using g++, make sure that Boost is installed and BOOSTINC, BOOSTLIB are correct
 #make mplrs             just mplrs, make sure mpic++ and an MPI library is installed
 
+MAKEFILE = makefile.osx
+
 #Select a path below to give location of boost atomic library
 # versions of gcc since at least 4.6.4 include boost atomic library
 # sony, mune
@@ -48,7 +50,7 @@ CFLAGS=-O3
 CPPFLAGS= -DTIMES -DSIGNALS
 
 # set to something more useful if your system has a ranlib command
-RANLIB ?= /bin/true
+RANLIB ?= /usr/bin/true
 
 # default set of executables to build
 BINARIES=2nash lrs lrs1 lrsnash redund redund1 setnash setnash2
@@ -89,7 +91,7 @@ all-static: $(LIB)
 	$(MAKE) LRSGMPLIB=$(LIB) all
 
 all-shared: $(SHLINK)
-	$(MAKE) LRSGMPLIB=$(SHLINK)
+	$(MAKE) LRSGMPLIB=$(SHLINK) --file=$(MAKEFILE)
 
 $(BINARIES): $(LRSGMPLIB)
 
@@ -98,7 +100,7 @@ liblrsgmp.a: lrslib-GMP.o lrsgmp-GMP.o
 	$(RANLIB) $@
 
 $(SHLIB): lrslib-GMP-SHR.o lrsgmp-GMP-SHR.o
-	$(CC) -shared -Wl,-soname=$(SONAME) $(SHLIBFLAGS) -o $@ $^ -lgmp
+	$(CC) -shared -Wl,-install_name,$(SONAME) $(SHLIBFLAGS) -o $@ $^ -lgmp
 
 $(SHLINK): $(SHLIB)
 	ln -sf $< $@
@@ -163,8 +165,8 @@ simple:		lrs.c lrslib.c lrslib.h lrsgmp.c lrsgmp.h
 		 gcc  -g -O3 -DTIMES -DSIGNALS  -DGMP -I${INCLUDEDIR} lrsnash.c lrsnashlib.c lrslib.c lrsgmp.c -L${LIBDIR}  -lgmp -o lrsnash
 
 lrsnash:	lrsnash.c nashdemo.c lrsnashlib.c lrslib.c lrsnashlib.h lrslib.h lrsgmp.c lrsgmp.h
-		gcc -O3  -o lrsnash lrsnash.c lrsnashlib.c lrslib.c lrsgmp.c -lgmp -DGMP
-		gcc -O3  -o nashdemo nashdemo.c lrsnashlib.c lrslib.c lrsgmp.c -lgmp -DGMP
+		gcc -O3  -o lrsnash lrsnash.c lrsnashlib.c lrslib.c lrsgmp.c -lgmp -DGMP -Wno-return-type
+		gcc -O3  -o nashdemo nashdemo.c lrsnashlib.c lrslib.c lrsgmp.c -lgmp -DGMP -Wno-return-type
 		gcc -O3 -o 2nash 2nash.c
 clean:		
 		rm -f $(BINARIES) $(LIBRARIES) lrsnash nashdemo plrs1 mplrs1 plrsmp plrs mplrs  *.o *.exe
